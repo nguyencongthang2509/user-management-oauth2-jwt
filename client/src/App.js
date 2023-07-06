@@ -1,13 +1,14 @@
 import "./App.css";
-import AuthGuard from "./component/AuthGuard";
-import DashBoardIntern from "./pages/DashBoardIntern";
-import DashBoardMentor from "./pages/DashBoardMentor";
-import Login from "./pages/Login";
+
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import SingUp from "./pages/Singup";
-import NotAuthorizationComponent from "./pages/403/403";
+import GuestGuard from "./guard/GuestGuard";
+import Login from "./pages/Login";
 import Home from "./pages/Home";
-import GuestGuard from "./component/GuestGuard";
+import SingUp from "./pages/Singup";
+import AuthGuard from "./guard/AuthGuard";
+import DashBoardIntern from "./component/DashBoardIntern";
+import DashBoardMentor from "./component/DashBoardMentor";
+import NotAuthorizationComponent from "./pages/403/403";
 
 function App() {
   return (

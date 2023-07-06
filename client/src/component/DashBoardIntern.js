@@ -11,8 +11,8 @@ const DashBoardIntern = () => {
   });
 
   const loadData = () => {
-    UserApi.fetchAll().then(() => {
-
+    UserApi.fetchAll().then((response) => {
+      console.log(response);
     });
   };
   return <div> Intern</div>;
