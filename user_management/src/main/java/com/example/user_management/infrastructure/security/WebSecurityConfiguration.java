@@ -1,19 +1,14 @@
 package com.example.user_management.infrastructure.security;
 
-import com.example.user_management.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -28,19 +23,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * @author thangncph26123
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfiguration {
 
-    private final ClientRegistrationRepository clientRegistrationRepository;
-
-    JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     private final CustomAuthenticationManager customAuthenticationManager;
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
     public WebSecurityConfiguration(ClientRegistrationRepository clientRegistration, CustomAuthenticationManager customAuthenticationManager) {
         this.clientRegistrationRepository = clientRegistration;
@@ -63,7 +56,6 @@ public class WebSecurityConfiguration {
                 .redirectionEndpoint().and()
                 .userInfoEndpoint().userService(oAuth2UserService()).and()
                 .failureHandler(this::onAuthenticationFailure);
-
         return http.build();
     }
 

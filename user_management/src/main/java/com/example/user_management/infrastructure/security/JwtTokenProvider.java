@@ -3,7 +3,7 @@ package com.example.user_management.infrastructure.security;
 import com.example.user_management.entity.User;
 import com.example.user_management.entity.UserToken;
 import com.example.user_management.infrastructure.constant.Role;
-import com.example.user_management.repository.UserTokenRepository;
+import com.example.user_management.service.impl.UserTokenServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -25,7 +25,7 @@ public class JwtTokenProvider {
     private final long jwtExpirationInMs = 86400000; // 24 giờ
 
     @Autowired
-    private UserTokenRepository userTokenRepository;
+    private UserTokenServiceImpl userTokenService;
 
     public String generateTokenUser(User user) {
         Date now = new Date();
@@ -37,11 +37,19 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
-        UserToken userToken = new UserToken();
-        userToken.setUserId(user.getId());
-        userToken.setToken(token);
-        userToken.setExpiredAt(expiryDate.getTime());
-        userTokenRepository.save(userToken);
+
+        UserToken userTokenFindByIdUser = userTokenService.findUserTokenByUserId(user.getId());
+        if (userTokenFindByIdUser == null) {
+            UserToken userToken = new UserToken();
+            userToken.setUserId(user.getId());
+            userToken.setToken(token);
+            userToken.setExpiredAt(expiryDate.getTime());
+            userTokenService.save(userToken);
+        } else {
+            userTokenFindByIdUser.setToken(token);
+            userTokenFindByIdUser.setExpiredAt(expiryDate.getTime());
+            userTokenService.save(userTokenFindByIdUser);
+        }
         return token;
     }
 
@@ -62,18 +70,23 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            // Parse token và kiểm tra chữ ký
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(jwtSecret)
                     .build()
                     .parseClaimsJws(token);
 
-            // Lấy thời gian hết hạn từ token
             Date expirationDate = claims.getBody().getExpiration();
-            // Kiểm tra xem token có hết hạn chưa
-            return expirationDate.after(new Date());
+            if (expirationDate.before(new Date())) {
+                return false;
+            }
+
+            UserToken userToken = userTokenService.findUserTokenByToken(token);
+            if (userToken == null) {
+                return false;
+            }
+
+            return true;
         } catch (JwtException | IllegalArgumentException e) {
-            // Xử lý lỗi khi parse hoặc kiểm tra token
             return false;
         }
     }

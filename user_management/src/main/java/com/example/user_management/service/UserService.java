@@ -22,4 +22,6 @@ public interface UserService {
 
     UUID delete(UUID id);
 
+    User findUserByEmail(String email);
+
 }

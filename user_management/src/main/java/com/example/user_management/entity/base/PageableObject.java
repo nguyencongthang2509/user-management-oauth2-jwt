@@ -5,9 +5,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-/**
- * @author thangncph26123
- */
 @Getter
 public class PageableObject<T> {
 

@@ -1,4 +1,4 @@
-package com.example.user_management.controller;
+package com.example.user_management.service.impl;
 
 import com.example.user_management.entity.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -9,7 +9,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 import java.util.Collections;
-
 
 public class GoogleTokenVerifier {
 
