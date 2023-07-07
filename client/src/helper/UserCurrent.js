@@ -1,6 +1,8 @@
 export const getUserCurrent = () => {
   const userCurrent = localStorage.getItem("userCurrent");
-  return userCurrent ? JSON.parse(userCurrent) : null;
+  return userCurrent != null && userCurrent !== "undefined"
+    ? JSON.parse(userCurrent)
+    : null;
 };
 
 export const getToken = () => {

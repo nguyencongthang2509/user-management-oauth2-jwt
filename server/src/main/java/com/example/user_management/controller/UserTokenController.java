@@ -1,7 +1,7 @@
 package com.example.user_management.controller;
 
 import com.example.user_management.entity.base.ResponseObject;
-import com.example.user_management.service.impl.UserTokenServiceImpl;
+import com.example.user_management.service.UserTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserTokenController {
 
     @Autowired
-    private UserTokenServiceImpl userTokenService;
+    private UserTokenService userTokenService;
 
     @GetMapping("/get-me")
     public ResponseObject getMe(HttpServletRequest request) {

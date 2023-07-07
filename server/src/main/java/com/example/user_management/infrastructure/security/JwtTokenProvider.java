@@ -2,6 +2,7 @@ package com.example.user_management.infrastructure.security;
 
 import com.example.user_management.entity.User;
 import com.example.user_management.entity.UserToken;
+import com.example.user_management.infrastructure.constant.Constants;
 import com.example.user_management.infrastructure.constant.Role;
 import com.example.user_management.service.impl.UserTokenServiceImpl;
 import io.jsonwebtoken.Claims;
@@ -21,9 +22,6 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final String jwtSecret = "QHMBQfsViR66wU3Yx/MOdkKcHdmJeRy4JdbDbrjmZdfu35Q7yzH6b3vJCrQcNgoOEFfsGyhOeF5Pby7R+YzG0w==";
-    private final long jwtExpirationInMs = 86400000; // 24 giờ
-
     @Autowired
     private UserTokenServiceImpl userTokenService;
 
@@ -35,7 +33,7 @@ public class JwtTokenProvider {
                 .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, Constants.JWTSECRET)
                 .compact();
 
         UserToken userTokenFindByIdUser = userTokenService.findUserTokenByUserId(user.getId());
@@ -55,7 +53,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(Constants.JWTSECRET)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -71,7 +69,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtSecret)
+                    .setSigningKey(Constants.JWTSECRET)
                     .build()
                     .parseClaimsJws(token);
 

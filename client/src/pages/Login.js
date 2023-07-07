@@ -12,7 +12,7 @@ const Login = () => {
     axios
       .get(apiUrl + "/" + response.credential)
       .then((res) => {
-        localStorage.setItem("userCurrent", JSON.stringify(res.data));
+        localStorage.setItem("userCurrent", JSON.stringify(res.data.data));
         navigate("/intern");
       })
       .catch((err) => {

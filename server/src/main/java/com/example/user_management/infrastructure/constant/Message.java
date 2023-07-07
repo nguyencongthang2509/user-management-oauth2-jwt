@@ -8,7 +8,8 @@ public enum Message {
 
     ERROR_UNKNOWN("Error Unknown"),
     USER_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.USER_NOT_EXISTS)),
-    USER_NOT_ALLOWED(PropertiesReader.getProperty(PropertyKeys.USER_NOT_ALLOWED));
+    USER_NOT_ALLOWED(PropertiesReader.getProperty(PropertyKeys.USER_NOT_ALLOWED)),
+    INVALID_TOKEN(PropertiesReader.getProperty(PropertyKeys.INVALID_TOKEN));
 
     private String message;
 

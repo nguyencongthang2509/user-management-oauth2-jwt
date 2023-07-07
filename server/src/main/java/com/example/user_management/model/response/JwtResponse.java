@@ -7,9 +7,6 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-/**
- * @author thangncph26123
- */
 @Getter
 @Setter
 @AllArgsConstructor

@@ -1,5 +1,6 @@
 import { Navigate } from "react-router";
 import { getToken } from "../helper/UserCurrent";
+import jwtDecode from "jwt-decode";
 
 const GuestGuard = ({ children }) => {
   const userToken = getToken();
@@ -7,7 +8,14 @@ const GuestGuard = ({ children }) => {
     return children;
   }
 
-  return <Navigate to="/home" />;
+  const decodedToken = jwtDecode(userToken);
+  const currentTime = Date.now() / 1000; 
+
+  if (decodedToken.exp < currentTime) {
+    return children; 
+  } else {
+    return <Navigate to="/login" />; 
+  }
 };
 
 export default GuestGuard;

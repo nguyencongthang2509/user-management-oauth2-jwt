@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -20,7 +19,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 @Configuration
@@ -31,18 +29,9 @@ public class WebSecurityConfiguration {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    private final CustomAuthenticationManager customAuthenticationManager;
-
-    private final ClientRegistrationRepository clientRegistrationRepository;
-
-    public WebSecurityConfiguration(ClientRegistrationRepository clientRegistration, CustomAuthenticationManager customAuthenticationManager) {
-        this.clientRegistrationRepository = clientRegistration;
-        this.customAuthenticationManager = customAuthenticationManager;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(customAuthenticationManager, jwtTokenProvider);
+        JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
         http
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .csrf().disable()
@@ -51,7 +40,6 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/", "/login", "/oauth/**", "/api/authentication/**").permitAll()
                 .anyRequest().authenticated().and()
                 .oauth2Login()
-                .clientRegistrationRepository(clientRegistrationRepository)
                 .authorizationEndpoint().baseUri("/oauth2/authorize").and()
                 .redirectionEndpoint().and()
                 .userInfoEndpoint().userService(oAuth2UserService()).and()
@@ -60,7 +48,7 @@ public class WebSecurityConfiguration {
     }
 
     private void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                         AuthenticationException exception) throws IOException {
+                                         AuthenticationException exception) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 

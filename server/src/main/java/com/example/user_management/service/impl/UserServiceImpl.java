@@ -40,6 +40,9 @@ public class UserServiceImpl implements UserService {
         if (!userFind.isPresent()) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
+        if(userFind.isPresent()) {
+            throw new RestApiException(Message.USER_NOT_EXISTS);
+        }
         return userRepository.findById(id).get();
     }
 
