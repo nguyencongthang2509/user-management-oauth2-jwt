@@ -15,11 +15,8 @@ request.interceptors.request.use((config) => {
 });
 
 request.interceptors.response.use(
-  (response) => {
-    console.log(response);
-  },
+  (response) => response,
   (error) => {
-    console.log(error.response);
     if (error.response && error.response.status === 500) {
       localStorage.removeItem("userCurrent");
       window.location.href = "/login";

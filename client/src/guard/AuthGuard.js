@@ -7,17 +7,11 @@ const AuthGuard = ({ children, levels }) => {
   const token = getToken();
   const navigate = useNavigate();
 
-  const authenticateToken = async () => {
-    try {
-      const response = await UserApi.getMe();
-      localStorage.setItem("userCurrent", JSON.stringify(response.data.data));
-    } catch (error) {
-    }
-  };
-
   useEffect(() => {
     if (token != null) {
-      authenticateToken();
+      UserApi.getMe().then((response) => {
+        localStorage.setItem("userCurrent", JSON.stringify(response.data.data));
+      });
     } else {
       navigate("/login");
     }

@@ -27,7 +27,7 @@ public class JwtTokenProvider {
 
     public String generateTokenUser(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 10000);
+        Date expiryDate = new Date(now.getTime() + Constants.JWTEXPIRATIONINMS);
         String token = Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("role", user.getRole())
