@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -27,7 +28,11 @@ public class JwtTokenProvider {
 
     public String generateTokenUser(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + Constants.JWTEXPIRATIONINMS);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.SECOND, Constants.JWTEXPIRATIONINMS);
+        Date expiryDate = calendar.getTime();
+
         String token = Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("role", user.getRole())

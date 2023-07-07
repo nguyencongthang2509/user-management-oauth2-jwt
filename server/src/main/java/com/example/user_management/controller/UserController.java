@@ -36,17 +36,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseObject create(@RequestBody CreateUserRequest request){
+    public ResponseObject create(@RequestBody CreateUserRequest request) {
         return new ResponseObject(userService.create(request));
     }
 
     @PutMapping()
-    public ResponseObject update(@RequestBody UpdateUserRequest request){
+    public ResponseObject update(@RequestBody UpdateUserRequest request) {
         return new ResponseObject(userService.update(request));
     }
 
     @PostMapping("/{id}")
-    public ResponseObject delete(@PathVariable("id") UUID id){
+    public ResponseObject delete(@PathVariable("id") UUID id) {
         return new ResponseObject(userService.delete(id));
     }
 }

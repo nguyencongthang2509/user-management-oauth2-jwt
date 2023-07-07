@@ -2,8 +2,6 @@ package com.example.user_management.infrastructure.constant;
 
 public final class Constants {
 
-    public static final long JWTEXPIRATIONINMS = 300000;
-
     private Constants() {
     }
 
@@ -27,4 +25,5 @@ public final class Constants {
 
     public static final String JWTSECRET = "QHMBQfsViR66wU3Yx/MOdkKcHdmJeRy4JdbDbrjmZdfu35Q7yzH6b3vJCrQcNgoOEFfsGyhOeF5Pby7R+YzG0w==";
 
+    public static final int JWTEXPIRATIONINMS = 300;
 }

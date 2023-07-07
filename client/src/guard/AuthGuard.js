@@ -7,15 +7,20 @@ const AuthGuard = ({ children, levels }) => {
   const token = getToken();
   const navigate = useNavigate();
 
+  const getMe = () => {
+    UserApi.getMe().then((response) => {
+      localStorage.setItem("userCurrent", JSON.stringify(response.data.data));
+    });
+  };
+
   useEffect(() => {
-    if (token != null) {
-      UserApi.getMe().then((response) => {
-        localStorage.setItem("userCurrent", JSON.stringify(response.data.data));
-      });
-    } else {
-      navigate("/login");
-    }
+    getMe();
   }, []);
+
+  if (token == null) {
+    navigate("/login");
+    return;
+  }
 
   return children;
 };

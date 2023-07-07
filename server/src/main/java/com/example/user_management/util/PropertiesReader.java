@@ -21,7 +21,6 @@ public class PropertiesReader {
 
 
     static {
-        // Load application properties file
         try (
                 InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.FileProperties.PROPERTIES_APPLICATION);
                 InputStreamReader reader = new InputStreamReader(is, Constants.ENCODING_UTF8);) {
@@ -29,7 +28,7 @@ public class PropertiesReader {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        // Load validation properties file
+
         try (
                 InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.FileProperties.PROPERTIES_VALIDATION);
                 InputStreamReader reader = new InputStreamReader(is, Constants.ENCODING_UTF8);

@@ -14,8 +14,10 @@ const DashBoardMentor = () => {
 
   const loadData = () => {
     UserApi.fetchAll().then((response) => {
-      dispatch(SetUsers(response.data.data));
-      setListUser(response.data.data.data);
+      if (response) {
+        dispatch(SetUsers(response.data.data));
+        setListUser(response.data.data.data);
+      }
     });
   };
 
