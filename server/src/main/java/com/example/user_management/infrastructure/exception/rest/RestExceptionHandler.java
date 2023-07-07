@@ -25,7 +25,7 @@ public final class RestExceptionHandler extends
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<?> handleInvalidTokenException(InvalidTokenException invalidTokenException) {
         ApiError apiError = new ApiError(invalidTokenException.getMessage());
-        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
     }
 
     @Override

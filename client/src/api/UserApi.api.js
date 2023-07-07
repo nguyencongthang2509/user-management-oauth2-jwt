@@ -3,7 +3,7 @@ export class UserApi {
   static fetchAll = () => {
     return request({
       method: "GET",
-      url: `/user`,
+      url: `/api/user`,
     });
   };
 

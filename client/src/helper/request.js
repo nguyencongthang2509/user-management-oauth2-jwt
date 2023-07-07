@@ -19,7 +19,8 @@ request.interceptors.response.use(
     console.log(response);
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
+    console.log(error.response);
+    if (error.response && error.response.status === 500) {
       localStorage.removeItem("userCurrent");
       window.location.href = "/login";
     }
