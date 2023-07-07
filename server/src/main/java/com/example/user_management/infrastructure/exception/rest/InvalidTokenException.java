@@ -2,7 +2,7 @@ package com.example.user_management.infrastructure.exception.rest;
 
 import com.example.user_management.infrastructure.constant.Message;
 
-public class InvalidTokenException extends RuntimeException{
+public class InvalidTokenException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

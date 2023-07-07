@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UpdateUserRequest extends BaseUserRequest{
+public class UpdateUserRequest extends BaseUserRequest {
 
     @NotBlank
     private UUID id;

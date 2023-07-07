@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             SELECT COUNT(1) FROM "users"
             """, nativeQuery = true)
     Page<UserResponse> findUser(Pageable pageable, @Param("req") final FindUserRequest req);
+
 //            WHERE (:#{#req.fullName} IS NULL OR :#{#req.fullName} ILIKE '' OR fullname ILIKE %:#{#req.fullName}%)
 //            AND (:#{#req.email} IS NULL OR :#{#req.email} ILIKE '' OR email ILIKE %:#{#req.email}%)
 //            AND (:#{#req.address} IS NULL OR :#{#req.address} ILIKE '' OR address ILIKE %:#{#req.address}%)

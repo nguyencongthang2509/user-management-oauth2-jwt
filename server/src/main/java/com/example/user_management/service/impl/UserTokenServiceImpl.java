@@ -32,7 +32,7 @@ public class UserTokenServiceImpl implements UserTokenService {
 
     public JwtResponse findUserByToken(String token) {
         UserResponse userResponseFind = userTokenRepository.findUserByToken(token);
-        if(userResponseFind == null) {
+        if (userResponseFind == null) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
         JwtResponse jwtResponse = new JwtResponse();
@@ -42,5 +42,7 @@ public class UserTokenServiceImpl implements UserTokenService {
         jwtResponse.setToken(token);
         jwtResponse.setIdUser(userResponseFind.getId());
         return jwtResponse;
-    };
+    }
+
+    ;
 }

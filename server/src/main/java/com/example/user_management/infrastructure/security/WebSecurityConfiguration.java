@@ -1,5 +1,6 @@
 package com.example.user_management.infrastructure.security;
 
+import com.example.user_management.infrastructure.constant.ActorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,16 +25,25 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
-        http.cors().and().csrf().disable()
+        http
+                .cors()
+                .and()
+                .csrf()
+                .disable()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers("/", "/login", "/oauth/**", "/api/authentication/**").permitAll()
-                .requestMatchers("/api/**").authenticated()
+                .requestMatchers("/api/**")
+                .authenticated()
+                .requestMatchers("/api/intern/**").hasRole(ActorConstants.INTERN)
+                .requestMatchers("/api/mentor/**").hasRole(ActorConstants.MENTOR)
                 .and()
                 .oauth2Login()
-                .authorizationEndpoint().baseUri("/oauth2/authorization/google").and()
-                .redirectionEndpoint().and()
-                .userInfoEndpoint().userService(oAuth2UserService());
+                .successHandler((request, response, authentication) -> {
+
+                })
+                .and()
+                .logout().permitAll();
         return http.build();
     }
 

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         if (!userFind.isPresent()) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
-        if(userFind.isPresent()) {
+        if (userFind.isPresent()) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
         return userRepository.findById(id).get();
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         if (userFind == null) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
-        if(!userFind.getId().equals(request.getIdUserCurrent())){
+        if (!userFind.getId().equals(request.getIdUserCurrent())) {
             throw new RestApiException(Message.USER_NOT_ALLOWED);
         }
         userFind.setAddress(request.getAddress());

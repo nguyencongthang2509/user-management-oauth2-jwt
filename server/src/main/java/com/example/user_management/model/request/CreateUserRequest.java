@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateUserRequest extends BaseUserRequest{
+public class CreateUserRequest extends BaseUserRequest {
 }

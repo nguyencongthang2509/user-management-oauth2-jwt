@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     public JwtResponse login(String tokenId) {
         User userVerify = GoogleTokenVerifier.verifyToken(tokenId);
         User user = userService.findUserByEmail(userVerify.getEmail());
-        if(user == null) {
+        if (user == null) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
         String jwtToken = jwtTokenProvider.generateTokenUser(user);

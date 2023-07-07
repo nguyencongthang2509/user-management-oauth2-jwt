@@ -2,7 +2,8 @@ package com.example.user_management.infrastructure.constant;
 
 public final class EntityProperties {
 
-    private EntityProperties(){}
+    private EntityProperties() {
+    }
 
     public static final byte LENGTH_ID = 36;
 
