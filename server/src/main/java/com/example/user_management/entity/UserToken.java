@@ -29,7 +29,7 @@ public class UserToken {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "token", length = EntityProperties.LENGTH_ADDRESS)
+    @Column(name = "token", length = EntityProperties.LENGTH_TOKEN)
     private String token;
 
     @Column(name = "expiredat")

@@ -13,6 +13,7 @@ const GuestGuard = ({ children }) => {
     }
 
     const decodedToken = jwtDecode(userToken);
+    console.log(decodedToken);
     const currentTime = Date.now();
     if (decodedToken.exp * 1000 > currentTime) {
       navigate("/home");

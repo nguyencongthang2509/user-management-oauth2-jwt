@@ -1,11 +1,21 @@
+import jwtDecode from "jwt-decode";
+
 export const getUserCurrent = () => {
   const userCurrent = localStorage.getItem("userCurrent");
-  return userCurrent != null && userCurrent !== "undefined"
-    ? JSON.parse(userCurrent)
-    : null;
+  return userCurrent ? JSON.parse(userCurrent) : null;
+};
+
+export const getIdUser = () => {
+  const userCurrent = getUserCurrent();
+  return userCurrent?.idUser || null;
 };
 
 export const getToken = () => {
   const userCurrent = getUserCurrent();
-  return userCurrent ? userCurrent.token : null;
+  return userCurrent?.token || null;
+};
+
+export const getDetailUser = () => {
+  const token = getToken();
+  return token ? jwtDecode(token) : null;
 };

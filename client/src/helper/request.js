@@ -17,9 +17,11 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log(error);
     if (error.response && error.response.status === 500) {
       localStorage.removeItem("userCurrent");
       window.location.href = "/login";
     }
+    alert(error.response.data.message);
   }
 );

@@ -15,11 +15,5 @@ public class JwtResponse {
 
     private UUID idUser;
 
-    private String fullName;
-
-    private String email;
-
-    private Integer role;
-
     private String token;
 }

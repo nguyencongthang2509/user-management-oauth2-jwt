@@ -1,18 +1,19 @@
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import FacebookLogin from "react-facebook-login";
 
-const apiUrl = "http://localhost:8080/api/authentication/login";
+const apiUrlLogin = "http://localhost:8080/api/authentication/login";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const handleGoogleLoginSuccess = (response) => {
     axios
-      .get(apiUrl + "/" + response.credential)
+      .post(apiUrlLogin + "-google/" + response.credential)
       .then((res) => {
         localStorage.setItem("userCurrent", JSON.stringify(res.data.data));
         navigate("/home");
@@ -26,11 +27,28 @@ const Login = () => {
     console.log(error);
   };
 
+  const onFinish = (values) => {
+    console.log(values);
+    axios
+      .post(apiUrlLogin + "-basic", values)
+      .then((res) => {
+        localStorage.setItem("userCurrent", JSON.stringify(res.data.data));
+        navigate("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const responseFacebook = (response) => {
+    console.log(response);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h2>Login</h2>
-        <Form className="login-form">
+        <Form className="login-form" onFinish={onFinish}>
           <Form.Item
             name="email"
             rules={[
@@ -70,6 +88,19 @@ const Login = () => {
             cookiePolicy="single_host_origin"
           />
         </GoogleOAuthProvider>
+        <br />
+        <FacebookLogin
+          appId="100078050940024"
+          autoLoad={true}
+          fields="name,email,picture"
+          scope="public_profile,user_friends"
+          callback={responseFacebook}
+          icon="fa-facebook"
+        />
+        <br />
+        <Button>
+          <Link to="/singup">Sing up</Link>
+        </Button>
       </header>
     </div>
   );

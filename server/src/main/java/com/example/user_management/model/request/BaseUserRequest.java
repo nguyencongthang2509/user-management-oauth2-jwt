@@ -28,7 +28,7 @@ public class BaseUserRequest {
     private String dateOfBirth;
 
     @NotBlank(message = "Mật khẩu không được để trống")
-    @Length(max = EntityProperties.LENGTH_PASSWORD, message = "Mật khẩu không vượt quá 30 ký tự")
+    @Length(max = EntityProperties.LENGTH_PASSWORD_SHORT, message = "Mật khẩu không vượt quá 30 ký tự")
     private String password;
 
     @NotBlank(message = "Số điện thoại không được để trống")

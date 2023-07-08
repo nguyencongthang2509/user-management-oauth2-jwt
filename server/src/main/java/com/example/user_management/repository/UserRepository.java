@@ -17,19 +17,23 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(value = """
             SELECT id, fullname, email, dateofbirth, phonenumber, gender, address, role FROM "users"
+            WHERE (:#{#req.fullName} IS NULL OR :#{#req.fullName} ILIKE '' OR fullname ILIKE %:#{#req.fullName}%)
+            AND (:#{#req.email} IS NULL OR :#{#req.email} ILIKE '' OR email ILIKE %:#{#req.email}%)
+            AND (:#{#req.address} IS NULL OR :#{#req.address} ILIKE '' OR address ILIKE %:#{#req.address}%)
+            AND (:#{#req.phoneNumber} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR phonenumber ILIKE %:#{#req.phoneNumber}%)
+            AND (:#{#req.gender} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR gender = :#{#req.gender})
             """, countQuery = """
             SELECT COUNT(1) FROM "users"
+            WHERE (:#{#req.fullName} IS NULL OR :#{#req.fullName} ILIKE '' OR fullname ILIKE %:#{#req.fullName}%)
+            AND (:#{#req.email} IS NULL OR :#{#req.email} ILIKE '' OR email ILIKE %:#{#req.email}%)
+            AND (:#{#req.address} IS NULL OR :#{#req.address} ILIKE '' OR address ILIKE %:#{#req.address}%)
+            AND (:#{#req.phoneNumber} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR phonenumber ILIKE %:#{#req.phoneNumber}%)
+            AND (:#{#req.gender} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR gender = :#{#req.gender})
             """, nativeQuery = true)
     Page<UserResponse> findUser(Pageable pageable, @Param("req") final FindUserRequest req);
-
-//            WHERE (:#{#req.fullName} IS NULL OR :#{#req.fullName} ILIKE '' OR fullname ILIKE %:#{#req.fullName}%)
-//            AND (:#{#req.email} IS NULL OR :#{#req.email} ILIKE '' OR email ILIKE %:#{#req.email}%)
-//            AND (:#{#req.address} IS NULL OR :#{#req.address} ILIKE '' OR address ILIKE %:#{#req.address}%)
-//            AND (:#{#req.phoneNumber} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR phonenumber ILIKE %:#{#req.phoneNumber}%)
-//            AND (:#{#req.gender} IS NULL OR :#{#req.phoneNumber} ILIKE '' OR gender = :#{#req.gender})
 
     @Query(value = """
             SELECT * FROM "users" WHERE email = :email
             """, nativeQuery = true)
-    User findUser(@Param("email") String email);
+    User findUserByEmail(@Param("email") String email);
 }

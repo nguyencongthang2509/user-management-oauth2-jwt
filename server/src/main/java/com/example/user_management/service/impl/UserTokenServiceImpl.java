@@ -36,13 +36,9 @@ public class UserTokenServiceImpl implements UserTokenService {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
         JwtResponse jwtResponse = new JwtResponse();
-        jwtResponse.setEmail(userResponseFind.getEmail());
-        jwtResponse.setRole(userResponseFind.getRole());
-        jwtResponse.setFullName(userResponseFind.getFullname());
         jwtResponse.setToken(token);
         jwtResponse.setIdUser(userResponseFind.getId());
         return jwtResponse;
     }
 
-    ;
 }

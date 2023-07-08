@@ -14,6 +14,8 @@ import com.example.user_management.util.ConvertStringToDate;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public PageableObject<UserResponse> findUser(final FindUserRequest request) {
         PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize());
@@ -40,22 +45,23 @@ public class UserServiceImpl implements UserService {
         if (!userFind.isPresent()) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
-        if (userFind.isPresent()) {
-            throw new RestApiException(Message.USER_NOT_EXISTS);
-        }
         return userRepository.findById(id).get();
     }
 
     @Override
     public User create(@Valid CreateUserRequest request) {
         User newUser = new User();
+        User userFindByEmail = userRepository.findUserByEmail(request.getEmail());
+        if (userFindByEmail != null) {
+            throw new RestApiException(Message.EMAIL_EXISTS);
+        }
         newUser.setAddress(request.getAddress());
         newUser.setEmail(request.getEmail());
         Date dateOfBirth = ConvertStringToDate.convert(request.getDateOfBirth(), "yyyy-MM-dd");
         newUser.setDateOfBirth(dateOfBirth);
         newUser.setGender(request.getGender());
         newUser.setFullName(request.getFullName());
-        newUser.setPassword(request.getPassword());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         newUser.setPhoneNumber(request.getPhoneNumber());
         newUser.setRole(request.getRole());
         return userRepository.save(newUser);
@@ -71,12 +77,12 @@ public class UserServiceImpl implements UserService {
             throw new RestApiException(Message.USER_NOT_ALLOWED);
         }
         userFind.setAddress(request.getAddress());
-        userFind.setEmail(request.getEmail());
         Date dateOfBirth = ConvertStringToDate.convert(request.getDateOfBirth(), "yyyy-MM-dd");
         userFind.setDateOfBirth(dateOfBirth);
         userFind.setGender(request.getGender());
         userFind.setFullName(request.getFullName());
-        userFind.setPassword(request.getPassword());
+        userFind.setPassword(passwordEncoder.encode(request
+                .getPassword()));
         userFind.setPhoneNumber(request.getPhoneNumber());
         userFind.setRole(request.getRole());
         return userRepository.save(userFind);
@@ -94,7 +100,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        User user = userRepository.findUser(email);
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new RestApiException(Message.USER_NOT_EXISTS);
+        }
         return user;
     }
 

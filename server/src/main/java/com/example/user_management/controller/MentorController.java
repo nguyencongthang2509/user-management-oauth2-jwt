@@ -20,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/mentor/user")
 @CrossOrigin("*")
-public class UserController {
+public class MentorController {
 
     @Autowired
     private UserService userService;

@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Nationalized;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class User {
     private UUID id;
 
     @Column(name = "fullname", length = EntityProperties.LENGTH_NAME)
+    @Nationalized
     private String fullName;
 
     @Column(name = "email", length = EntityProperties.LENGTH_EMAIL)
@@ -50,6 +52,7 @@ public class User {
     private Boolean gender;
 
     @Column(name = "address", length = EntityProperties.LENGTH_ADDRESS)
+    @Nationalized
     private String address;
 
     @Column(name = "role", nullable = false)
