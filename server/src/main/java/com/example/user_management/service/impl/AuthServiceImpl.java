@@ -66,6 +66,7 @@ public class AuthServiceImpl implements AuthService {
 //            throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
 //        }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
+        System.out.println(userDetails);
         if (!passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
             throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
         }

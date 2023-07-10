@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {
@@ -39,6 +40,9 @@ public class JwtTokenProvider {
                 .claim("name", userFind.getFullName())
                 .claim("address", userFind.getAddress())
                 .claim("idUser", userFind.getId())
+                .claim("dateOfBirth", userFind.getDateOfBirth())
+                .claim("gender", userFind.getGender())
+                .claim("phoneNumber", userFind.getPhoneNumber())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, Constants.JWTSECRET)
@@ -68,8 +72,17 @@ public class JwtTokenProvider {
         String email = claims.getSubject();
         String role = claims.get("role", String.class);
         String fullName = claims.get("name", String.class);
+        String idUser = claims.get("idUser", String.class);
+        String address = claims.get("address", String.class);
+        String phoneNumber = claims.get("phoneNumber", String.class);
+        Boolean gender = claims.get("gender", Boolean.class);
+
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
         User principal = new User();
+        principal.setId(UUID.fromString(idUser));
+        principal.setPhoneNumber(phoneNumber);
+        principal.setGender(gender);
+        principal.setAddress(address);
         principal.setEmail(email);
         principal.setFullName(fullName);
         principal.setRole(Role.valueOf(authority.getAuthority()));

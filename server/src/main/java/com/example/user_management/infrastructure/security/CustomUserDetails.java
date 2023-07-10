@@ -20,11 +20,8 @@ public class CustomUserDetails implements UserDetails {
     private String fullName;
     private String role;
 
-    public CustomUserDetails(UserDetails userDetails, UUID id, String fullName, String role) {
+    public CustomUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
-        this.id = id;
-        this.fullName = fullName;
-        this.role = role;
     }
 
     @Override
@@ -35,9 +32,7 @@ public class CustomUserDetails implements UserDetails {
                 authorities.add(new SimpleGrantedAuthority(ActorConstants.MENTOR));
                 break;
             case ActorConstants.INTERN:
-                authorities.add(new SimpleGrantedAuthority(ActorConstants.MENTOR));
-                break;
-            default:
+                authorities.add(new SimpleGrantedAuthority(ActorConstants.INTERN));
                 break;
         }
         return authorities;

@@ -5,6 +5,7 @@ import com.example.user_management.infrastructure.constant.Message;
 import com.example.user_management.infrastructure.exception.rest.RestApiException;
 import com.example.user_management.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,17 +31,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(String.valueOf(userInfo.getRole())));
-
-        UserDetails userDetails = new CustomUserDetails(
+        CustomUserDetails userDetails = new CustomUserDetails(
                 new org.springframework.security.core.userdetails.User(
                         userInfo.getEmail(),
                         userInfo.getPassword(),
                         authorities
-                ),
-                userInfo.getId(),
-                userInfo.getFullName(),
-                String.valueOf(userInfo.getRole())
+                )
         );
+        userDetails.setId(userInfo.getId());
+        userDetails.setFullName(userInfo.getFullName());
+        userDetails.setRole(String.valueOf(userInfo.getRole()));
         return userDetails;
     }
 
