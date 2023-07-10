@@ -35,9 +35,6 @@ public class AuthServiceImpl implements AuthService {
     private UserTokenRepository userTokenRepository;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
@@ -60,13 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse loginBasic(@RequestBody LoginRequest loginRequest) {
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-//        } catch (BadCredentialsException e) {
-//            throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
-//        }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
-        System.out.println(userDetails);
         if (!passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
             throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
         }
