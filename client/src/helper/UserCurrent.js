@@ -6,7 +6,7 @@ export const getUserCurrent = () => {
 };
 
 export const getIdUser = () => {
-  const userCurrent = getUserCurrent();
+  const userCurrent = getDetailUser();
   return userCurrent?.idUser || null;
 };
 

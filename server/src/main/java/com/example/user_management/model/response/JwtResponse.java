@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class JwtResponse {
 
-    private UUID idUser;
+//    private UUID idUser;
 
     private String token;
 }

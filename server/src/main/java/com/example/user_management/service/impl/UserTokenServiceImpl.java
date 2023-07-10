@@ -37,7 +37,6 @@ public class UserTokenServiceImpl implements UserTokenService {
         }
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(token);
-        jwtResponse.setIdUser(userResponseFind.getId());
         return jwtResponse;
     }
 

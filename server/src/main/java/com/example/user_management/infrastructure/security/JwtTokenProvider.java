@@ -13,7 +13,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,7 @@ public class JwtTokenProvider {
     @Autowired
     private UserTokenServiceImpl userTokenService;
 
-    public String generateTokenUser(CustomUserDetails customUserDetails) {
+    public String generateTokenUser(User userFind) {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
@@ -35,18 +34,20 @@ public class JwtTokenProvider {
         Date expiryDate = calendar.getTime();
 
         String token = Jwts.builder()
-                .setSubject(customUserDetails.getUsername())
-                .claim("role", customUserDetails.getRole())
-                .claim("name", customUserDetails.getFullName())
+                .setSubject(userFind.getEmail())
+                .claim("role", String.valueOf(userFind.getRole()))
+                .claim("name", userFind.getFullName())
+                .claim("address", userFind.getAddress())
+                .claim("idUser", userFind.getId())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, Constants.JWTSECRET)
                 .compact();
 
-        UserToken userTokenFindByIdUser = userTokenService.findUserTokenByUserId(customUserDetails.getId());
+        UserToken userTokenFindByIdUser = userTokenService.findUserTokenByUserId(userFind.getId());
         if (userTokenFindByIdUser == null) {
             UserToken userToken = new UserToken();
-            userToken.setUserId(customUserDetails.getId());
+            userToken.setUserId(userFind.getId());
             userToken.setToken(token);
             userToken.setExpiredAt(expiryDate.getTime());
             userTokenService.save(userToken);

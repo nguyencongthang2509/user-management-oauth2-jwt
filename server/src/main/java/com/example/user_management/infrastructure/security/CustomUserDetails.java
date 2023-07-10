@@ -32,10 +32,10 @@ public class CustomUserDetails implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         switch (role) {
             case ActorConstants.MENTOR:
-                authorities.add(new SimpleGrantedAuthority("MENTOR"));
+                authorities.add(new SimpleGrantedAuthority(ActorConstants.MENTOR));
                 break;
             case ActorConstants.INTERN:
-                authorities.add(new SimpleGrantedAuthority("INTERN"));
+                authorities.add(new SimpleGrantedAuthority(ActorConstants.MENTOR));
                 break;
             default:
                 break;
@@ -45,12 +45,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return userDetails.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userDetails.getUsername();
     }
 
     public String getFullName() {

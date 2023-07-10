@@ -32,9 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (jwtToken != null) {
             if (jwtTokenProvider.validateToken(jwtToken)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 throw new InvalidTokenException(Message.INVALID_TOKEN);
             }

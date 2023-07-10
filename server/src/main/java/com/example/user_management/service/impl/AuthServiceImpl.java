@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,33 +40,39 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public JwtResponse loginGoogle(String tokenId) {
         User userVerify = GoogleTokenVerifier.verifyToken(tokenId);
-        CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userVerify.getEmail());
-        if (customUserDetails == null) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userVerify.getEmail());
+        System.out.println(userDetails);
+        if (userDetails == null) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }
-        String jwtToken = jwtTokenProvider.generateTokenUser(customUserDetails);
+        User userFind = userRepository.findUserByEmail(userVerify.getEmail());
+        String jwtToken = jwtTokenProvider.generateTokenUser(userFind);
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(jwtToken);
-        jwtResponse.setIdUser(customUserDetails.getId());
         return jwtResponse;
     }
 
     @Override
     public JwtResponse loginBasic(@RequestBody LoginRequest loginRequest) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        } catch (BadCredentialsException e) {
+//        try {
+//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+//        } catch (BadCredentialsException e) {
+//            throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
+//        }
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
+        if (!passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
             throw new RestApiException(Message.EMAIL_OR_PASSWORD_INCORRECT);
         }
-
-        CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
-        String jwtToken = jwtTokenProvider.generateTokenUser(customUserDetails);
+        User userFind = userRepository.findUserByEmail(loginRequest.getEmail());
+        String jwtToken = jwtTokenProvider.generateTokenUser(userFind);
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(jwtToken);
-        jwtResponse.setIdUser(customUserDetails.getId());
         return jwtResponse;
     }
 
