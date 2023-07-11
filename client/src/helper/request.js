@@ -18,10 +18,11 @@ request.interceptors.response.use(
   (response) => response,
   (error) => {
     console.log(error);
-    if (error.response && error.response.status === 500) {
-      localStorage.removeItem("userCurrent");
-      window.location.href = "/login";
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      window.location.href = "/not-found";
     }
-    alert(error.response.data.message);
   }
 );

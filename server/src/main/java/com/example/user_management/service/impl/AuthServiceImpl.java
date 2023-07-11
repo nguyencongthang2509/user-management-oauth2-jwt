@@ -3,7 +3,6 @@ package com.example.user_management.service.impl;
 import com.example.user_management.entity.User;
 import com.example.user_management.infrastructure.constant.Message;
 import com.example.user_management.infrastructure.exception.rest.RestApiException;
-import com.example.user_management.infrastructure.security.CustomUserDetails;
 import com.example.user_management.infrastructure.security.CustomUserDetailsService;
 import com.example.user_management.infrastructure.security.JwtTokenProvider;
 import com.example.user_management.model.request.LoginRequest;
@@ -12,9 +11,6 @@ import com.example.user_management.repository.UserRepository;
 import com.example.user_management.repository.UserTokenRepository;
 import com.example.user_management.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,7 +40,6 @@ public class AuthServiceImpl implements AuthService {
     public JwtResponse loginGoogle(String tokenId) {
         User userVerify = GoogleTokenVerifier.verifyToken(tokenId);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userVerify.getEmail());
-        System.out.println(userDetails);
         if (userDetails == null) {
             throw new RestApiException(Message.USER_NOT_EXISTS);
         }

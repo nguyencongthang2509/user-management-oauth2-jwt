@@ -5,7 +5,6 @@ import com.example.user_management.infrastructure.constant.Message;
 import com.example.user_management.infrastructure.exception.rest.RestApiException;
 import com.example.user_management.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
